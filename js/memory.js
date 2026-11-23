@@ -3,8 +3,8 @@
   const ICONS = ["🍎", "🍋", "🍇", "🍉", "🍒", "🥝", "🍑", "🍍"];
 
   function bestLabel() {
-    const saved = Arcade.store.get(KEY);
-    return saved ? "Best " + saved + " moves" : "No score yet";
+    const best = Arcade.store.getBest(KEY);
+    return best !== null ? "Best " + best + " moves" : "No score yet";
   }
 
   function mount(root) {
@@ -31,8 +31,8 @@
     let timer = 0;
 
     function showBest() {
-      const saved = Arcade.store.get(KEY);
-      bestEl.textContent = saved ? saved : "—";
+      const best = Arcade.store.getBest(KEY);
+      bestEl.textContent = best !== null ? String(best) : "—";
     }
 
     function paint() {
@@ -47,8 +47,7 @@
     }
 
     function win() {
-      const saved = Arcade.store.get(KEY);
-      if (!saved || moves < Number(saved)) Arcade.store.set(KEY, String(moves));
+      Arcade.store.saveBest(KEY, moves, true);
       showBest();
       overlay.hidden = false;
     }

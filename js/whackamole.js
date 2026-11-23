@@ -4,8 +4,8 @@
   const ROUND_SECONDS = 30;
 
   function bestLabel() {
-    const saved = Arcade.store.get(KEY);
-    return saved ? "Best " + saved + " hits" : "No score yet";
+    const best = Arcade.store.getBest(KEY);
+    return best !== null ? "Best " + best + " hits" : "No score yet";
   }
 
   function mount(root) {
@@ -48,7 +48,7 @@
     const up = new Map(); // hole index -> escape timeout id
 
     function savedBest() {
-      return Number(Arcade.store.get(KEY) || 0);
+      return Arcade.store.getBest(KEY) || 0;
     }
 
     function maxUp() {
@@ -115,7 +115,7 @@
     function endRound() {
       running = false;
       clearTimers();
-      if (score > savedBest()) Arcade.store.set(KEY, String(score));
+      Arcade.store.saveBest(KEY, score, false);
       paint();
       overTitle.textContent = "Time's up";
       overNote.textContent = "You whacked " + score + (score === 1 ? " mole." : " moles.");

@@ -2,8 +2,8 @@
   const KEY = "mini-arcade:reaction";
 
   function bestLabel() {
-    const saved = Arcade.store.get(KEY);
-    return saved ? "Best " + saved + " ms" : "No score yet";
+    const best = Arcade.store.getBest(KEY);
+    return best !== null ? "Best " + best + " ms" : "No score yet";
   }
 
   function mount(root) {
@@ -23,8 +23,8 @@
     let started = 0;
 
     function showBest() {
-      const saved = Arcade.store.get(KEY);
-      bestEl.textContent = saved ? saved + " ms" : "—";
+      const best = Arcade.store.getBest(KEY);
+      bestEl.textContent = best !== null ? best + " ms" : "—";
     }
 
     function render() {
@@ -62,8 +62,7 @@
       started = ms;
       state = "result";
       lastEl.textContent = Math.round(ms) + " ms";
-      const saved = Arcade.store.get(KEY);
-      if (!saved || ms < Number(saved)) Arcade.store.set(KEY, String(Math.round(ms)));
+      Arcade.store.saveBest(KEY, Math.round(ms), true);
       showBest();
       hint.textContent = "Tap the pad to go again.";
       render();

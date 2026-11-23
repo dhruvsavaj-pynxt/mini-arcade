@@ -23,8 +23,8 @@
   };
 
   function bestLabel() {
-    const saved = Arcade.store.get(KEY);
-    return saved ? "Best " + saved : "No score yet";
+    const best = Arcade.store.getBest(KEY);
+    return best !== null ? "Best " + best : "No score yet";
   }
 
   function mount(root) {
@@ -69,7 +69,7 @@
     let pointer = null;
 
     function savedBest() {
-      return Number(Arcade.store.get(KEY) || 0);
+      return Arcade.store.getBest(KEY) || 0;
     }
 
     function paintHud() {
@@ -131,8 +131,7 @@
 
     function finish() {
       alive = false;
-      const best = savedBest();
-      if (score > best) Arcade.store.set(KEY, String(score));
+      Arcade.store.saveBest(KEY, score, false);
       finalEl.textContent = String(score);
       paintHud();
       overlay.hidden = false;

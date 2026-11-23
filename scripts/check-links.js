@@ -59,19 +59,15 @@ function checkPage(page) {
 }
 
 function checkGames() {
-  const buildSource = fs.readFileSync(path.join(ROOT, "scripts", "build.js"), "utf8");
-  const ids = [];
-  const idRe = /id: "([^"]+)",\s*\n\s*file: "([^"]+)"/g;
-  let m;
-  while ((m = idRe.exec(buildSource))) {
-    ids.push(m[1]);
-    const page = path.join("games", m[1] + ".html");
-    const script = path.join("js", m[2] + ".js");
-    if (!fs.existsSync(path.join(ROOT, page))) errors.push("missing page for game " + m[1] + " (run build)");
+  const games = require("./games");
+  games.forEach(function (game) {
+    const page = path.join("games", game.id + ".html");
+    const script = path.join("js", game.file + ".js");
+    if (!fs.existsSync(path.join(ROOT, page))) errors.push("missing page for game " + game.id + " (run build)");
     if (!fs.existsSync(path.join(ROOT, script))) errors.push("missing script " + script);
-  }
-  if (!ids.length) errors.push("no games found in scripts/build.js");
-  return ids.length;
+  });
+  if (!games.length) errors.push("no games defined in scripts/games.js");
+  return games.length;
 }
 
 const pages = listPages();
