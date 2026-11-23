@@ -1,0 +1,10 @@
+.git
+.github
+.claude
+node_modules
+_site
+games
+index.html
+sitemap.xml
+robots.txt
+*.md

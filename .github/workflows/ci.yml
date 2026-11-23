@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-check:
+    name: Build and validate site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build static site
+        run: npm run build
+        env:
+          SITE_URL: ${{ vars.SITE_URL || 'https://example.com' }}
+
+      - name: Validate links, metadata and JSON-LD
+        run: npm run check
+
+  docker-smoke:
+    name: Docker image builds and serves
+    runs-on: ubuntu-latest
+    needs: build-and-check
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build --build-arg SITE_URL=https://example.com -t mini-arcade:ci .
+
+      - name: Start container and check health and a game page
+        run: |
+          docker run -d --name arcade -p 8080:8080 mini-arcade:ci
+          for i in $(seq 1 20); do
+            if curl -fsS http://127.0.0.1:8080/healthz >/dev/null 2>&1; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/healthz
+          curl -fsS http://127.0.0.1:8080/games/snake.html | grep -q "Snake"
+          curl -fsSI http://127.0.0.1:8080/styles.css | grep -qi "cache-control: public, max-age=604800"
+          curl -fsSI http://127.0.0.1:8080/ | grep -qi "x-content-type-options: nosniff"
+
+      - name: Container logs on failure
+        if: failure()
+        run: docker logs arcade || true
