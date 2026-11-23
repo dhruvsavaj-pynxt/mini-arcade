@@ -6,7 +6,7 @@
  *   sitemap.xml         for search engines
  *   robots.txt
  *
- * Usage:  SITE_URL=https://your-domain.com node scripts/build.js
+ * Usage:  SITE_URL=https://your-custom-domain.com node scripts/build.js
  * SITE_URL is the public address of the site (no trailing slash).
  * Defaults to the GitHub Pages address of this repository.
  * Games are defined in scripts/games.js.
