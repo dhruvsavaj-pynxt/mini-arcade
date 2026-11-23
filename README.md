@@ -34,10 +34,10 @@ Then open `index.html` in a browser. The generated pages use relative paths, so 
 npx --yes serve .
 ```
 
-To get real canonical URLs and sitemap entries, set your public address first:
+The site URL defaults to the GitHub Pages address of this repository (`https://dhruvsavaj-pynxt.github.io/mini-arcade`), which sets the canonical links, sitemap, and `robots.txt`. To use a different public address, such as a custom domain, set `SITE_URL` first:
 
 ```powershell
-$env:SITE_URL = "https://your-domain.com"; npm run build
+$env:SITE_URL = "https://your-custom-domain.com"; npm run build
 ```
 
 ## Scripts
@@ -75,7 +75,7 @@ Three GitHub Actions workflows live in `.github/workflows/`:
 
 Before the deploy workflows will run:
 
-1. Add a repository variable `SITE_URL` with your public address (for example `https://your-domain.com`).
+1. Add a repository variable `SITE_URL` with your public address (already set to `https://dhruvsavaj-pynxt.github.io/mini-arcade` for this repo).
 2. For GitHub Pages: Settings → Pages → Source → "GitHub Actions".
 
 ### Load-balanced container hosting
@@ -84,7 +84,7 @@ Before the deploy workflows will run:
 
 ```powershell
 cd deploy
-$env:SITE_URL = "https://your-domain.com"; docker compose up -d --build
+$env:SITE_URL = "https://dhruvsavaj-pynxt.github.io/mini-arcade"; docker compose up -d --build
 ```
 
 Open http://localhost. Each container exposes `/healthz` for health checks.

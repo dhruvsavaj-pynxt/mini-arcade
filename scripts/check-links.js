@@ -5,7 +5,7 @@
  *   - every JSON-LD block parses
  *   - every page has a title, meta description and canonical link
  *   - every game in the build list has a page and a script
- * With --strict, also fails if the placeholder domain is still in the output.
+ * With --strict, also fails if a placeholder domain (example.com etc.) is in the output.
  * Run `node scripts/build.js` first.
  */
 const fs = require("fs");
@@ -53,8 +53,8 @@ function checkPage(page) {
     }
   }
 
-  if (strict && html.indexOf("YOUR-DOMAIN") !== -1) {
-    errors.push(page + ": still contains placeholder domain; set SITE_URL before deploying");
+  if (strict && /example\.(com|invalid)|YOUR-DOMAIN/.test(html)) {
+    errors.push(page + ": still contains a placeholder domain; set SITE_URL before deploying");
   }
 }
 

@@ -7,8 +7,8 @@
  *   robots.txt
  *
  * Usage:  SITE_URL=https://your-domain.com node scripts/build.js
- * SITE_URL must be the public address of the site (no trailing slash).
- * Without it, canonical URLs use a placeholder and must be fixed before launch.
+ * SITE_URL is the public address of the site (no trailing slash).
+ * Defaults to the GitHub Pages address of this repository.
  * Games are defined in scripts/games.js.
  */
 const fs = require("fs");
@@ -17,7 +17,8 @@ const GAMES = require("./games");
 
 const ROOT = path.join(__dirname, "..");
 const SITE_NAME = "Mini Arcade";
-const SITE_URL = (process.env.SITE_URL || "https://YOUR-DOMAIN.example").replace(/\/+$/, "");
+const DEFAULT_SITE_URL = "https://dhruvsavaj-pynxt.github.io/mini-arcade";
+const SITE_URL = (process.env.SITE_URL || DEFAULT_SITE_URL).replace(/\/+$/, "");
 const TODAY = new Date().toISOString().slice(0, 10);
 
 const FAVICON =
@@ -256,7 +257,3 @@ GAMES.forEach(function (game) {
 });
 write("sitemap.xml", buildSitemap());
 write("robots.txt", buildRobots());
-
-if (SITE_URL.indexOf("YOUR-DOMAIN") !== -1) {
-  console.warn("\nSITE_URL is not set. Canonical, sitemap and og:url use a placeholder. Re-run with SITE_URL=https://your-domain.com");
-}

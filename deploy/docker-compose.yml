@@ -1,6 +1,6 @@
 # Load-balanced deployment: two app containers behind an nginx load balancer.
 # Run from the deploy/ folder:
-#   $env:SITE_URL = "https://your-domain.com"; docker compose up -d --build
+#   $env:SITE_URL = "https://dhruvsavaj-pynxt.github.io/mini-arcade"; docker compose up -d --build
 # Then open http://localhost (the load balancer). Scale by adding app3 etc. to lb.conf.
 services:
   app1:

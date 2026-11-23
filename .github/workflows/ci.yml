@@ -22,7 +22,7 @@ jobs:
       - name: Build static site
         run: npm run build
         env:
-          SITE_URL: ${{ vars.SITE_URL || 'https://example.com' }}
+          SITE_URL: ${{ vars.SITE_URL || 'https://dhruvsavaj-pynxt.github.io/mini-arcade' }}
 
       - name: Validate links, metadata and JSON-LD
         run: npm run check
@@ -35,7 +35,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build image
-        run: docker build --build-arg SITE_URL=https://example.com -t mini-arcade:ci .
+        run: docker build --build-arg SITE_URL=https://dhruvsavaj-pynxt.github.io/mini-arcade -t mini-arcade:ci .
 
       - name: Start container and check health and a game page
         run: |
